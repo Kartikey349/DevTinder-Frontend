@@ -14,7 +14,7 @@
 - install axios
 - CORS - install cors in backend => add midddle to App.js with configuration: origin, credentials: true
 - Whenver you're making api call so pass axios ==> {withCredentials: true}
--
+- install redux-toolkit
 -
 -
 -
