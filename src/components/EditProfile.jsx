@@ -15,9 +15,11 @@ const EditProfile = ({user}) => {
     const [photoUrl, setPhotoUrl] = useState(user?.photoUrl)
     const [error, setError] = useState("")
     const dispatch  = useDispatch();
+    const [showToast, setShowToast] = useState(false)
 
 
     const updateProfile = async () => {
+        setError("")
         try{
             const res = await axios.patch( BASE_URL + "/profile/edit", {
                 firstName,
@@ -30,14 +32,19 @@ const EditProfile = ({user}) => {
                 withCredentials:true
             })
             dispatch(addUser(res.data.data))
+            setShowToast(true);
+
+            setTimeout(() => {
+                setShowToast(false)
+            },3000)
         }catch(err){
-            console.log(err)
             setError(err.response.data)
         }
     } 
 
 
     return(
+        <div>
         <div className="flex justify-center gap-10">
             <div className="card card-border bg-base-300 w-96 flex">
                 <div className="card-body">
@@ -73,25 +80,28 @@ const EditProfile = ({user}) => {
                         </fieldset>
                     </div>
 
-                    <div>
-                        <fieldset className="fieldset leading-1.5">
-                            <legend className="fieldset-legend">Gender</legend>
-                            <input type="text" className="input"
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Gender</span>
+                        </label>
+                        <select
+                            className="select select-bordered"
                             value={gender}
-                            onChange={(e) => setGender(e.target.value) }
-                            />
-                        </fieldset>
-                    </div>
+                            onChange={(e) => setGender(e.target.value)}
+                        >
+                            <option disabled value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>    
 
-                    <div>
-                        <fieldset className="fieldset leading-1.5">
-                            <legend className="fieldset-legend">About</legend>
-                            <input type="text" className="input"
-                            value={about}
-                            onChange={(e) => setAbout(e.target.value) }
-                            />
-                        </fieldset>
-                    </div>
+                    <fieldset className="fieldset">
+                        <legend className="fieldset-legend leading-1.5">About</legend>
+                        <textarea className="textarea h-24" placeholder="About" value={about}
+                            onChange={(e) => setAbout(e.target.value) }></textarea>
+                    </fieldset>
+
 
                     <div>
                         <fieldset className="fieldset leading-1.5">
@@ -112,6 +122,13 @@ const EditProfile = ({user}) => {
                 </div>
             </div>
              <Card users={{firstName, lastName, photoUrl, age, gender, about}} />
+        </div>
+
+        {showToast && <div className="toast toast-top toast-center">
+                <div className="alert alert-success">
+                    <span>Profile Updated successfully.</span>
+                </div>
+            </div>}
         </div>
     )
 }
