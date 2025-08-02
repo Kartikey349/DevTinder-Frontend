@@ -9,21 +9,25 @@ const Login = () => {
 
     const [emailId, setEmailId] = useState("kartikey@gmail.com");
     const [password, setPassword] = useState("Sagar#123")
+    const [error, setError] = useState('')
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-
-        const user = await axios.post(BASE_URL + "/login", {
-            emailId,
-            password
-        }, {
-            withCredentials: true
-        })
-
-        dispatch(addUser(user.data))
-        navigate("/");
+        try{
+            const user = await axios.post(BASE_URL + "/login", {
+                emailId,
+                password
+            }, {
+                withCredentials: true
+            })
+    
+            dispatch(addUser(user.data))
+            navigate("/");
+        }catch(err){
+            setError(err?.response?.data)
+        }
     }
 
     return(
@@ -51,6 +55,7 @@ const Login = () => {
                             />
                         </fieldset>
                     </div>
+                   <h4 className="text-red-600">{error}</h4>
 
                     <div className="card-actions justify-center mt-2">
                         <button className="btn btn-primary"

@@ -14,11 +14,11 @@ const Body = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const user = useSelector((store) => store.user)
+    const userData = useSelector((store) => store.user)
 
     const fetchProfile = async () => {
         try{
-            if(user) return;
+            if(userData) return;
             const res = await axios.get(BASE_URL+ "/profile/view", {
                 withCredentials: true
             })
