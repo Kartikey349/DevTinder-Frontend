@@ -10,7 +10,6 @@ const ConnectionRequest = () => {
     const requests = useSelector((store) => store.request)
 
     const fetchrequests = async () => {
-        if(requests) return;
         const res = await axios.get(BASE_URL +"/user/request/received", {
             withCredentials: true
         });
@@ -18,17 +17,26 @@ const ConnectionRequest = () => {
     }
 
     useEffect(() => {
-        fetchrequests()
+        if (!requests || requests.length === 0) {
+            fetchrequests();
+        }
     }, [])
 
     if(!requests) return;
 
-    if(requests.length === 0) <h1>No Requests Found</h1>
 
-    return <div className="flex flex-col items-center">
+    if (requests.length === 0) {
+    return (
+      <div className="flex flex-col items-center mt-10">
+        <h1 className="text-2xl font-bold">No Requests Found</h1>
+      </div>
+    );
+  }
+
+    return <div className="flex flex-col items-center gap-5 mb-20 p-4">
         <h1 className="text-2xl font-bold my-8 ">Connection Requests</h1>
         {
-            requests.map((request) => <ConnectionCard key={request.fromUserId._id} data={request.fromUserId} /> )
+            requests.map((request) => <ConnectionCard key={request.fromUserId._id} data={request} /> )
         }
         
     </div>

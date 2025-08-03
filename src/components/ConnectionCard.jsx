@@ -14,19 +14,19 @@ const ConnectionCard = ({data}) => {
             })
             dispatch(removeRequest(requestId))
         }catch(err){
-            console.log(err.response.data)
+            console.log(err)
         }
     }
 
-    return <div className="card card-side bg-base-300 shadow-sm w-4/12">
-                <figure>
-                    <img
+    return <div className="card card-side bg-base-300 shadow-sm w-full sm:w-8/12 pl-5">
+                <figure className="w-4/12">
+                    <img className="h-30 w-full"
                         src={data?.fromUserId.photoUrl}
                     alt="Movie" />
                 </figure>
-                <div className="card-body">
+                <div className="card-body w-8/12">
                     <h2 className="card-title">{data?.fromUserId.firstName}  {data?.fromUserId.lastName}</h2>
-                    <p>{data?.fromUserId.about}</p>
+                    <p className="line-clamp-1">{data?.fromUserId.about}</p>
                     <p>{data?.fromUserId.age}, {data?.fromUserId.gender}</p>
                     <div className="card-actions justify-end">
                         <button className="btn btn-secondary"
