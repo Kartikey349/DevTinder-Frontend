@@ -17,9 +17,7 @@ const ConnectionRequest = () => {
     }
 
     useEffect(() => {
-        if (!requests || requests.length === 0) {
             fetchrequests();
-        }
     }, [])
 
     if(!requests) return;
