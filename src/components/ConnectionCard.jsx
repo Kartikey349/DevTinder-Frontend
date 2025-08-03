@@ -18,9 +18,9 @@ const ConnectionCard = ({data}) => {
         }
     }
 
-    return <div className="card card-side bg-base-300 shadow-sm w-full sm:w-8/12 pl-5">
+    return <div className="card card-side bg-base-300 shadow-sm w-full sm:w-6/12 pl-5 h-45">
                 <figure className="w-4/12">
-                    <img className="h-30 w-full"
+                    <img className="h-40 w-full"
                         src={data?.fromUserId.photoUrl}
                     alt="Movie" />
                 </figure>
