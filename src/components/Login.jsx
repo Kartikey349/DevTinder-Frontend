@@ -84,7 +84,7 @@ const Login = () => {
                             <legend className="fieldset-legend">Email</legend>
                             <input type="text" className="input"
                             value={emailId}
-                            onChange={(e) => setEmailId(e.target.value)}
+                            onChange={(e) => setEmailId((e.target.value).toLowerCase())}
                             />
                         </fieldset>
                     </div>
