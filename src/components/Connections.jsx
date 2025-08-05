@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react";
 import ConnectionCard from "./ConnectionCard";
 import { addConnection } from "../utils/connectionSlice";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Connections = () => {
                     <p className="line-clamp-2">{about}</p>
                     <p>{age}, {gender}</p>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Message</button>
+                       <Link to={"/chat/" + _id}> <button className="btn btn-primary">Message</button></Link>
                     </div>
                 </div>
                 </div>
