@@ -35,6 +35,17 @@ const Chat = () => {
         setMessage(chatMessages)
     }
 
+
+    const clearMessage= async () => {
+        const confirmed = window.confirm("Are you sure you want to delete this chat permanently?");
+  
+        if (!confirmed) return;
+        
+        const res = await axios.patch(BASE_URL + "/chat/" + targetId + "/delete", {} ,{
+            withCredentials: true
+        })
+    }
+
     useEffect(() => {
         if(!loggedInId) return;
         const socket = createServerConnection();
@@ -72,8 +83,11 @@ const Chat = () => {
 
     return(
         <div className="flex justify-center items-center flex-col">
-        <div className=" w-full md:w-6/12 md:border h-[70vh] p-2 rounded-lg overflow-y-scroll">
-        <div className="fixed top-8 left-[50%] rounded-lg p-1 bg-white text-black">{onlineStatus? "online" : "offline"}</div>
+            <div className="my-2">
+                <button onClick={clearMessage} className="btn btn-primary">clear</button>
+                <button className="">{onlineStatus? "🟢" : "🔴"}</button>
+            </div>
+        <div className=" w-full md:w-6/12 border h-[70vh] p-2 rounded-lg overflow-y-scroll">
         {message && message.map((msg, index) => {
             return (
                 <div key={index} className={`chat ${msg?.firstName === user.firstName ? "chat-end" : "chat-start"} `}>
@@ -91,7 +105,7 @@ const Chat = () => {
         <form onSubmit={(e) => {
             e.preventDefault()
             setNewMessage("")
-        }} className=" w-full absolute bottom-20 md:w-6/12 flex gap-1 mt-1 p-4">
+        }} className=" w-full md:w-6/12 flex gap-1 mt-1 p-4">
             <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="border-1 flex-1 rounded-md px-2" type="text" />
             <button className="btn-primary btn"
             onClick={sendMessage}
