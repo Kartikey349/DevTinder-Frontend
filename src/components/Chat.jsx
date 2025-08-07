@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { createServerConnection } from "../utils/serverConnection";
 import { useParams } from "react-router-dom";
@@ -13,11 +13,18 @@ const Chat = () => {
     const user = useSelector((store) => store.user)
     const [onlineStatus, setOnlineStatus] = useState("")
     const loggedInId = user?._id
+    const ref = useRef(null)
+
+    useEffect(() => {
+        ref.current.scrollIntoView({
+            behaviour: "smooth"
+        })
+    }, [message])
 
 
     useEffect(() => {
         fetchChatMessages()
-    })
+    }, [targetId])
 
     const fetchChatMessages = async () => {
         const chat = await axios.get(BASE_URL + "/chat/" + targetId, {
@@ -44,6 +51,8 @@ const Chat = () => {
         const res = await axios.patch(BASE_URL + "/chat/" + targetId + "/delete", {} ,{
             withCredentials: true
         })
+
+        setMessage(res.data)
     }
 
     useEffect(() => {
@@ -87,7 +96,7 @@ const Chat = () => {
                 <button onClick={clearMessage} className="btn btn-primary">clear</button>
                 <button className="">{onlineStatus? "🟢" : "🔴"}</button>
             </div>
-        <div className=" w-full md:w-6/12 border h-[70vh] p-2 rounded-lg overflow-y-scroll">
+        <div className=" w-full md:w-6/12 border h-[65vh] p-2 rounded-lg overflow-y-scroll">
         {message && message.map((msg, index) => {
             return (
                 <div key={index} className={`chat ${msg?.firstName === user.firstName ? "chat-end" : "chat-start"} `}>
@@ -100,15 +109,16 @@ const Chat = () => {
             </div>
             )
         })}
+            <div ref={ref}></div>
 
         </div>
         <form onSubmit={(e) => {
             e.preventDefault()
+            sendMessage()
             setNewMessage("")
         }} className=" w-full md:w-6/12 flex gap-1 mt-1 p-4">
             <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="border-1 flex-1 rounded-md px-2" type="text" />
             <button className="btn-primary btn"
-            onClick={sendMessage}
             >send</button>
         </form>
 </div>
